@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "expense-tracker": {
+    "medication-tracker": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "expense-tracker:build:production"
+              "buildTarget": "medication-tracker:build:production"
             },
             "development": {
-              "buildTarget": "expense-tracker:build:development"
+              "buildTarget": "medication-tracker:build:development"
             }
           },
           "defaultConfiguration": "development"
