@@ -3,12 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { User, UserService } from '../user.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'user-auth-root',
   imports: [FormsModule],
   templateUrl: 'auth.html',
   styleUrl: 'auth.css',
 })
-export class App {
+export class UserAuth {
   title = 'practice-firestore-crud';
 
   // Injecting UserService from user.service.ts
@@ -51,6 +51,8 @@ export class App {
     this.userService.updateUser(this.selectedUser()?.id!, user);
     this.resetForm();
   }
+
+  loginUser() {}
 
   registerUser() {
     this.resetForm();
