@@ -1,30 +1,77 @@
 <div class="container w-50">
-  <div>
-    <h1>Login</h1>
-    <input
-      type="text"
-      class="form-control w-50 mb-1"
-      [(ngModel)]="name"
-      placeholder="Enter your user name"
-    />
-  </div>
-  <div>
-    <input type="text" class="form-control w-50 mb-1" [(ngModel)]="email" placeholder="Email" />
-  </div>
-  <div>
-    <input
-      type="text"
-      class="form-control w-50 mb-1"
-      [(ngModel)]="password"
-      placeholder="Password"
-    />
-  </div>
+  @if (pageState() == 'register') {
+    <!-- user registration page -->
+    <div>
+      <h1>Login</h1>
+      <input
+        type="text"
+        class="form-control w-50 mb-1"
+        [(ngModel)]="name"
+        placeholder="Enter your user name"
+      />
+    </div>
+    <div>
+      <input type="text" class="form-control w-50 mb-1" [(ngModel)]="email" placeholder="Email" />
+    </div>
+    <div>
+      <input
+        type="text"
+        class="form-control w-50 mb-1"
+        [(ngModel)]="password"
+        placeholder="Password"
+      />
+    </div>
+  } @else if (pageState() == 'update') {
+    <!-- update info page -->
+    <div>
+      <h1>Login</h1>
+      <input
+        type="text"
+        class="form-control w-50 mb-1"
+        [(ngModel)]="name"
+        placeholder="Enter your user name"
+      />
+    </div>
+    <div>
+      <input type="text" class="form-control w-50 mb-1" [(ngModel)]="email" placeholder="Email" />
+    </div>
+    <div>
+      <input
+        type="text"
+        class="form-control w-50 mb-1"
+        [(ngModel)]="password"
+        placeholder="Password"
+      />
+    </div>
+  } @else {
+    <!-- login page -->
+    <div>
+      <h1>Login</h1>
+      <input
+        type="text"
+        class="form-control w-50 mb-1"
+        [(ngModel)]="name"
+        placeholder="Enter your user name"
+      />
+    </div>
+    <div>
+      <input type="text" class="form-control w-50 mb-1" [(ngModel)]="email" placeholder="Email" />
+    </div>
+    <div>
+      <input
+        type="text"
+        class="form-control w-50 mb-1"
+        [(ngModel)]="password"
+        placeholder="Password"
+      />
+    </div>
+  }
 
   <div>
     @if (pageState() == 'register') {
       <button class="btn btn-outline-primary" (click)="addUser()">Create Account</button>
     } @else if (pageState() == 'update') {
-      <!-- TODO fill this in later -->
+      <button class="btn btn-outline-primary" (click)="updateUser()">Confirm</button>
     } @else {
       <button class="btn btn-outline-primary" (click)="loginUser()">Login</button>
       <button class="btn btn-outline-primary" (click)="registerUser()">Create Account</button>
