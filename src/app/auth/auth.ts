@@ -5,8 +5,8 @@ import { User, UserService } from '../user.service';
 @Component({
   selector: 'app-root',
   imports: [FormsModule],
-  templateUrl: '../app.html',
-  styleUrl: '../app.css',
+  templateUrl: 'auth.html',
+  styleUrl: 'auth.css',
 })
 export class App {
   title = 'practice-firestore-crud';
