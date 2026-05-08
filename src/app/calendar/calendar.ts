@@ -11,9 +11,12 @@ export class Calendar {
 
   router = inject(Router);
 
+  
+
   // current date state
   currentDate = signal(new Date());
 
+  // array of days to display in calendar 
   days: (number | null)[] = [];
 
   ngOnInit() {
@@ -49,6 +52,7 @@ export class Calendar {
     this.days = temp;
   }
 
+  // buttons to navigate months
   prevMonth() {
     const d = this.currentDate();
     this.currentDate.set(new Date(d.getFullYear(), d.getMonth() - 1, 1));
@@ -61,6 +65,7 @@ export class Calendar {
     this.generateCalendar();
   }
 
+  // navigate to day view for given day
   go(day: number | null) {
     if (!day) return;
 
@@ -71,6 +76,7 @@ export class Calendar {
     this.router.navigate(['day', formatted]);
   }
 
+  // gets current month and year as "Month YYYY"
   get monthYear() {
     return this.currentDate().toLocaleString('default', {
       month: 'long',
