@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from './firebase.config';
 
@@ -19,8 +19,21 @@ export interface User {
 export class UserService {
   //signal property call users of array of Users type.
   users = signal<User[]>([]);
+  currentUser = signal<User | null>(JSON.parse(localStorage.getItem('currentUser') || 'null'));
 
   userCollection = collection(db, 'users');
+
+  constructor() {
+    effect(() => {
+      const user = this.currentUser();
+
+      if (user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('currentUser');
+      }
+    });
+  }
 
   //loadUsers( ) - Fetches (READ) all user documents from Firestore, converts them
   // into usable objects, and update the Angular signal so the UI reacts automatically.
@@ -44,10 +57,14 @@ export class UserService {
     const userRef = doc(db, 'users', id); //document reference
     await updateDoc(userRef, user);
   }
-  
+
   //DELETE
   async deleteUser(id: string) {
     const userRef = doc(db, 'users', id);
     await deleteDoc(userRef);
+  }
+
+  getCurrentUser(): User | null {
+    return this.currentUser();
   }
 }
