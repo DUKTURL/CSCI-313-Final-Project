@@ -1,4 +1,7 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, inject } from '@angular/core';
+import { Medication } from '../../medication';
+import { UserService } from '../../user.service';
+
 
 @Component({
   selector: 'app-day-timer',
@@ -8,6 +11,8 @@ import { Component, computed, input } from '@angular/core';
 })
 export class DayTimer {
   date = input.required<string>();
+  medicationService = inject(Medication);
+  userService = inject(UserService);
 
   // visual height per hour
   hourHeight = 80;
@@ -24,52 +29,59 @@ export class DayTimer {
 
  
 
-  medications = [
-  {
-    id: '1',
-    name: 'Vitamin D',
-    hour: 10,
-    minute: 30,
-  },
-  {
-    id: '2',
-    name: 'Vitamin C',
-    hour: 10,
-    minute: 30,
-  }
-];
+  // compute medications for the day based on current user and date
+  medications = computed(() => {
+    const userId = this.userService.getCurrentUser()?.id;
+    const selectedDay = this.getDayName();
 
-// compute top position and height for each medication based on user entered time
-positionedMeds() {
-  return this.medications.map(med => {
-    const totalMinutes = med.hour * 60 + med.minute;
-
-    return {
-      ...med,
-      top: totalMinutes * this.pixelsPerMinute,
-      height: 60 * this.pixelsPerMinute
-    };
+    return this.medicationService.medications().filter(m =>
+      m.user_id === userId &&
+      m.days_to_take.includes(selectedDay)
+    );
   });
-}
 
-// group medications by time for display in timeline so that they dont stack on top of each other
-groupedMeds = () => {
+  // calculate top position and height for each medication based on hour and duration
+  positionedMeds() {
+    return this.medications().map(med => {
+      const totalMinutes = med.hour * 60;
 
-  // key is "hour:minute" and value is array of meds at that time
-  const groups: Record<string, any[]> = {};
-
-  // group meds by "hour:minute" key
-  for (const med of this.medications) {
-
-    const key = `${med.hour}:${med.minute}`;
-
-    if (!groups[key]) groups[key] = [];
-
-    groups[key].push(med);
+      return {
+        ...med,
+        top: totalMinutes * this.pixelsPerMinute,
+        height: 60 * this.pixelsPerMinute
+      };
+    });
   }
 
-  return groups;
-};
+  // group medications by hour for display in timeline
+  groupedMeds = () => {
 
+    const groups: Record<string, any[]> = {};
+
+    // loop through medications and group them by hour
+    for (const med of this.medications()) {
+
+      const key = `${med.hour}:`;
+
+      if (!groups[key]) groups[key] = [];
+
+      groups[key].push(med);
+    }
+
+    return groups;
+  };
+
+  // helper function to get day name from date string
+  // it parses the date input, creates a Date object, and returns the weekday name in English
+  // this is used because of how times are converted
+  getDayName(): string {
+    const [year, month, day] = this.date().split('-').map(Number);
+
+    const localDate = new Date(year, month - 1, day);
+
+    return localDate.toLocaleDateString('en-US', {
+      weekday: 'long'
+    });
+  }
 
 }
