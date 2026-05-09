@@ -37,7 +37,8 @@ export class DayTimer {
 
     return this.medicationService.medications().filter(m =>
       m.user_id === userId &&
-      m.days_to_take.includes(selectedDay) 
+      m.days_to_take.includes(selectedDay)&&
+      m.date_added <= this.date()
     );
   });
 
