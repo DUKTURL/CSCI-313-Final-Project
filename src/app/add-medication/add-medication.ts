@@ -42,6 +42,10 @@ export class AddMedication {
 
   // creates medication object and sends to firestore
   async addMedication() {
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
     const medication: MedicationModel = {
       med_id: Date.now(),
 
@@ -56,7 +60,7 @@ export class AddMedication {
       days_to_take: this.days_to_take(),
 
       // stores todays date
-      date_added: new Date().toISOString().split('T')[0],
+      date_added: now.toISOString().split('T')[0],
 
       // starts empty until medication taken
       dates_taken: [],
