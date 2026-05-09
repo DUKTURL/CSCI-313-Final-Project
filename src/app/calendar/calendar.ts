@@ -59,6 +59,15 @@ export class Calendar {
 
   getDotsForDay(day: number | null): DotColor[] {
     if (!day) return [];
+    const DAY_NAMES = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
 
     const userId = this.userService.currentUser()?.id;
     const medications = this.medicationService
@@ -67,9 +76,11 @@ export class Calendar {
 
     const result: DotColor[] = [];
 
-    const today = new Date(`${new Date().getFullYear()}-${(new Date().getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
+    const today = new Date(
+      `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
+        .toString()
+        .padStart(2, '0')}-${day.toString().padStart(2, '0')}`,
+    );
     const date = this.currentDate();
     const formatted = `${date.getFullYear()}-${(date.getMonth() + 1)
       .toString()
@@ -83,9 +94,9 @@ export class Calendar {
       if (addedDate >= currentDate) continue;
 
       // check if med applies to this day
-      if (!med.days_to_take.includes(String(day))) continue;
+      if (med.days_to_take.includes(DAY_NAMES[day])) continue;
 
-      const taken = med.dates_taken.includes(String(day));
+      const taken = med.dates_taken.includes(DAY_NAMES[day]);
       const nowHour = today.getHours();
 
       let dot: DotColor = '';
