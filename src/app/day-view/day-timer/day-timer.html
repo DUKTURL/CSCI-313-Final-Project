@@ -1,49 +1,38 @@
 <!-- create the day timer with 24-hour labels -->
-<div class=" h-100 overflow-auto x-overflow-hidden">
-
-    <div class="row g-0">
-
-        <!-- Left side for hours -->
-        <div class="col-3 border-end bg-dark-subtle">
-
-            <!-- 24 hour labels -->
-            @for (hour of hours; track hour) {
-
-                <div class="hour-box d-flex justify-content-center align-items-center text-dark fw-semibold" [style.height.px]="hourHeight">{{ hour }}:00</div>
-            }
-
+<div class="h-100 overflow-auto x-overflow-hidden">
+  <div class="row g-0">
+    <!-- Left side for hours -->
+    <div class="col-3 border-end bg-dark-subtle">
+      <!-- 24 hour labels -->
+      @for (hour of hours; track hour) {
+        <div
+          class="hour-box d-flex justify-content-center align-items-center text-dark fw-semibold"
+          [style.height.px]="hourHeight"
+        >
+          {{ hour }}:00
         </div>
-        
-    
-
+      }
+    </div>
 
     <!-- Right side of timeline -->
-        <div class="col-9 position-relative">
+    <div class="col-9 position-relative">
+      <!-- 24 hour lines with medication pills inside -->
+      @for (hour of hours; track hour) {
+        <div class="border-top border-dark position-relative" [style.height.px]="hourHeight">
+          <!-- Medications in the hour -->
 
-            <!-- 24 hour lines with medication pills inside -->
-            @for (hour of hours; track hour) {
-
-                <div class="border-top border-dark position-relative" [style.height.px]="hourHeight">
-
-                    <!-- Medications in the hour -->
-
-                    <div class="d-flex flex-wrap gap-1 p-1">
-
-
-                        <!-- Loop through medications and display those that match the current hour -->
-                        @for (med of medications; track med.id) {
-
-                            @if (med.hour === hour) {
-
-                                <div class="med-pill">
-                                    {{ med.name }}
-                                </div>
-
-                            }
-                        }
-                    </div>
+          <div class="d-flex flex-wrap gap-1 p-1">
+            <!-- Loop through medications and display those that match the current hour -->
+            @for (med of medications(); track med.med_id) {
+              @if (med.hour === hour) {
+                <div class="med-pill">
+                  {{ med.name }}
                 </div>
+              }
             }
+          </div>
         </div>
+      }
     </div>
+  </div>
 </div>

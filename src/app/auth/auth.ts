@@ -82,7 +82,14 @@ export class UserAuth {
   loginUser() {
     const user: User = { name: this.name(), email: this.email(), password: this.password() };
     if (this.validateUser()) {
-      this.userService.currentUser.set(user);
+      this.userService.currentUser.set(
+      // find the user object that matches the entered credentials and set it as current user
+      this.userService.users().find(u =>
+          u.name.toLowerCase() === user.name.toLowerCase() &&
+          u.email.toLowerCase() === user.email.toLowerCase() &&
+          u.password.toLowerCase() === user.password.toLowerCase()
+        )!
+      );
     }
   }
 
