@@ -1,24 +1,34 @@
 <div class="container d-flex flex-column align-items-center mt-4 calendar-container">
-    <h2>{{ monthYear }}</h2>
+  <h2>{{ monthYear }}</h2>
 
-    <div class="nav">
-      <button (click)="prevMonth()">←</button>
-      <button (click)="nextMonth()">→</button>
-    </div>
-    <div class="calendar-panel">
-      <div class="calendar">
-        <!-- Weekday labels -->
-        @for (w of weekDays; track w) {
-          <div class="header">{{ w }}</div>
-        }
+  <div class="nav">
+    <button (click)="prevMonth()">←</button>
+    <button (click)="nextMonth()">→</button>
+  </div>
+  <div class="calendar-panel">
+    <div class="calendar">
+      <!-- Weekday labels -->
+      @for (w of weekDays; track w) {
+        <div class="header">{{ w }}</div>
+      }
 
-        <!-- Days -->
-        @for (d of days; track $index) {
-          <div class="day" [class.empty]="!d" (click)="go(d)">
-            {{ d }}
+      <!-- Days -->
+      @for (d of days; track $index) {
+        <!-- <div class="day" [class.empty]="!d" (click)="go(d)">
+          {{ d }}
+        </div> -->
+        <!-- //chat code -->
+        <div class="day" [class.empty]="!d" (click)="go(d)">
+          <div class="number">{{ d }}</div>
+
+          <div class="dot-grid">
+            @for (dot of getDotsForDay(d); track $index) {
+              <div class="dot" [ngClass]="dot"></div>
+            }
           </div>
-        }
-      </div>
+        </div>
+        <!-- //end chat code -->
+      }
     </div>
   </div>
-
+</div>

@@ -1,47 +1,84 @@
 .calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    max-width: 400px;
-    justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  max-width: 400px;
+  justify-content: center;
 }
 
 .header {
-    font-weight: bold;
-    text-align: center;
+  font-weight: bold;
+  text-align: center;
 }
 
 .day {
-    height: 60px;
-    width: 60px;
-    border: 1px solid #555;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    background-color: #2f2f2f;
+  height: 60px;
+  width: 60px;
+  border: 1px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  background-color: #2f2f2f;
+  flex-direction: column;
 }
 
 .day:hover {
-    background: gray;
+  background: gray;
 }
 
 .empty {
-    background: lightgray;
-    border: 1px solid #ddd;
-    cursor: default;
+  background: lightgray;
+  border: 1px solid #ddd;
+  cursor: default;
 }
 
 .nav {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .calendar-container {
-    background: #222222;
-    padding: 30px;
-    margin-top: 30px;
-    border-radius: 12px;
-    color: white;
+  background: #222222;
+  padding: 30px;
+  margin-top: 30px;
+  border-radius: 12px;
+  color: white;
 }
 
+/* chat code */
+.number {
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+}
+
+.dot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 2px;
+  width: fit-content;
+  height: fit-content;
+  justify-items: center;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Colors */
+.red {
+  background-color: red;
+}
+
+.green {
+  background-color: green;
+}
+
+.grey {
+  background-color: lightgray;
+}

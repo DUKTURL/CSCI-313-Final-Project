@@ -1,22 +1,26 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { Medication } from '../medication';
+import { NgClass } from '@angular/common';
+import { UserService } from '../user.service';
+type DotColor = 'red' | 'green' | 'grey' | '';
 
 @Component({
   selector: 'app-calendar',
-  imports: [RouterLink],
+  imports: [RouterLink, NgClass],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
 })
 export class Calendar {
-
   router = inject(Router);
 
-  
+  medicationService = inject(Medication);
+  userService = inject(UserService);
 
   // current date state
   currentDate = signal(new Date());
 
-  // array of days to display in calendar 
+  // array of days to display in calendar
   days: (number | null)[] = [];
 
   ngOnInit() {
@@ -25,6 +29,7 @@ export class Calendar {
 
   generateCalendar() {
     const date = this.currentDate();
+    const medications = this.medicationService.medications();
 
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -52,6 +57,83 @@ export class Calendar {
     this.days = temp;
   }
 
+  getDotsForDay(day: number | null): DotColor[] {
+    if (!day) return [];
+
+    const userId = this.userService.currentUser()?.id;
+    const medications = this.medicationService
+      .medications()
+      .filter((med) => med.user_id === userId);
+
+    const result: DotColor[] = [];
+
+    const today = new Date(`${new Date().getFullYear()}-${(new Date().getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${day.toString().padStart(2, '0')}`);
+    const date = this.currentDate();
+    const formatted = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const currentDate = new Date(formatted);
+
+    for (const med of medications) {
+      const addedDate = new Date(med.date_added);
+      this.userService.currentUser()?.id;
+      // only include meds added before or on current date
+      if (addedDate >= currentDate) continue;
+
+      // check if med applies to this day
+      if (!med.days_to_take.includes(String(day))) continue;
+
+      const taken = med.dates_taken.includes(String(day));
+      const nowHour = today.getHours();
+
+      let dot: DotColor = '';
+
+      if (taken) {
+        dot = 'green';
+      } else if (med.hour > nowHour) {
+        dot = 'grey';
+      } else {
+        dot = 'red';
+      }
+
+      result.push(dot);
+
+      // stop if we already have 6 dots
+      if (result.length === 6) break;
+    }
+
+    // fill remaining slots up to 6
+    while (result.length < 6) {
+      result.push('');
+    }
+
+    return result;
+  }
+
+  // getDotsForDay(day: number | null): DotColor[] {
+  //   if (!day) return [];
+
+  //   const date = this.currentDate();
+  //   const medications = this.medicationService.medications();
+
+  //   const dotArray = signal<DotColor[]>([]); // this is 3 wide 2 tall max
+  //   for (const med of medications) {
+  //     if (med.date_added (this is a string) is before or is current day) {
+  //       if(med.days_to_take (string array) includes today) {
+  //         add a dot to the dot array,
+  //         green if its also in the dates taken array,
+  //         grey if med.hour (number) hasnt happened yet,
+  //         red if it has happened, but isnt in the dates taken array,
+  //         and if this array is less than 6, fill it with '',
+  //         otherwise if its more than six, exit the for loop
+  //       }
+  //     }
+  //   }
+  //   return dotArray();
+  // }
+
   // buttons to navigate months
   prevMonth() {
     const d = this.currentDate();
@@ -71,7 +153,8 @@ export class Calendar {
 
     const date = this.currentDate();
     const formatted = `${date.getFullYear()}-${(date.getMonth() + 1)
-      .toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      .toString()
+      .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
     this.router.navigate(['day', formatted]);
   }
@@ -80,7 +163,7 @@ export class Calendar {
   get monthYear() {
     return this.currentDate().toLocaleString('default', {
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
     });
   }
 
