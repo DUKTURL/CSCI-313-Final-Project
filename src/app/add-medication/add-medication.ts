@@ -12,9 +12,9 @@ import { UserService } from '../user.service';
 })
 export class AddMedication {
   userService = inject(UserService);
-
-  // inject medication service
   medicationService = inject(Medication);
+
+  message = signal<string>('');
 
   // medication form signals
   name = signal('');
@@ -65,6 +65,14 @@ export class AddMedication {
     await this.medicationService.addMedication(medication);
 
     this.resetForm();
+
+    // show success message
+    this.message.set('Medication added');
+
+    // clear after short delay
+    setTimeout(() => {
+      this.message.set('');
+    }, 2000);
   }
 
   // resets form after medication added

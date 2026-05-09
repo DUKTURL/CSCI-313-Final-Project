@@ -66,4 +66,10 @@
       <button class="btn btn-success w-100" (click)="addMedication()">Add Medication</button>
     </div>
   </div>
+  <!-- Success message after adding a medication -->
+  @if (message()) {
+    <div class="alert alert-success mt-2 text-center">
+      {{ message() }}
+    </div>
+  }
 </div>

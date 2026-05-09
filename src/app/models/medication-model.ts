@@ -1,4 +1,5 @@
 export interface MedicationModel {
+    id?: string;
     med_id: number; 
     user_id: string;
     name: string;
