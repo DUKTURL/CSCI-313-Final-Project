@@ -1,6 +1,7 @@
 import { Component, computed, input, inject } from '@angular/core';
 import { Medication } from '../../medication';
 import { UserService } from '../../user.service';
+import { MedicationModel } from '../../models/medication-model';
 
 
 @Component({
@@ -29,14 +30,14 @@ export class DayTimer {
 
  
 
-  // compute medications for the day based on current user and date
+  // compute medications for the day based on current user, date, and after start date
   medications = computed(() => {
     const userId = this.userService.getCurrentUser()?.id;
     const selectedDay = this.getDayName();
 
     return this.medicationService.medications().filter(m =>
       m.user_id === userId &&
-      m.days_to_take.includes(selectedDay)
+      m.days_to_take.includes(selectedDay) 
     );
   });
 
@@ -70,6 +71,8 @@ export class DayTimer {
 
     return groups;
   };
+
+  
 
   // helper function to get day name from date string
   // it parses the date input, creates a Date object, and returns the weekday name in English

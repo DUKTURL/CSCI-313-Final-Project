@@ -1,15 +1,51 @@
 <!-- Displays the day timer in a scrollable card component on the day view -->
 <div class="container-fluid p-4">
-  <div class="card shadow-sm" style="width: 50%; height: 75vh">
-    <div class="card-header fw-bold">Day Timer</div>
+  <div class="row g-3">
+    <div class="card shadow-sm" style="width: 50%; height: 75vh">
+      <div class="card-header fw-bold">Day Timer</div>
 
-    <div class="card-body overflow-hidden">
-      <app-day-timer class="d-block h-100" [date]="date()"></app-day-timer>
+      <div class="card-body overflow-hidden">
+        <app-day-timer class="d-block h-100" [date]="date()"></app-day-timer>
+      </div>
+    </div>
+
+    <!-- RIGHT: medication panel -->
+    <div class="col-5">
+      <div class="card shadow-sm h-100">
+        <div class="card-header fw-bold">Medications</div>
+
+        <div class="card-body overflow-auto">
+          <!-- Medication cards -->
+          @for (med of medications(); track med.med_id) {
+            <div class="card mb-3 p-3">
+              <!-- Medication name -->
+              <div class="fw-bold">
+                {{ med.name }}
+              </div>
+
+              <!-- Medication description -->
+              <div class="text-muted small mb-2">
+                {{ med.description }}
+              </div>
+
+              <!-- Time -->
+              <div class="mb-2">Time: {{ med.hour }}:00</div>
+
+              <div class="form-check">
+                <!-- Checkbox for marking medication as taken -->
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]="med.dates_taken.includes(date())"
+                  (change)="toggleTaken(med, $event)"
+                />
+
+                <label class="form-check-label"> Taken </label>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- RIGHT: medication panel -->
-    
 </div>
-
-
