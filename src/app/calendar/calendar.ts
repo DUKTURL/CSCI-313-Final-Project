@@ -76,16 +76,13 @@ export class Calendar {
 
     const result: DotColor[] = [];
 
-    const today = new Date(
-      `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}-${day.toString().padStart(2, '0')}`,
-    );
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const date = this.currentDate();
-    const formatted = `${date.getFullYear()}-${(date.getMonth() + 1)
+    const formattedCurrentDate = `${date.getFullYear()}-${(date.getMonth() + 1)
       .toString()
       .padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    const currentDate = new Date(formatted);
+    const currentDate = new Date(date.getFullYear(), date.getMonth(), day);
 
     for (const med of medications) {
       const addedDate = new Date(med.date_added);
@@ -94,16 +91,15 @@ export class Calendar {
       if (addedDate >= currentDate) continue;
 
       // check if med applies to this day
-      if (med.days_to_take.includes(DAY_NAMES[day])) continue;
+      if (!med.days_to_take.includes(DAY_NAMES[currentDate.getDay()])) continue;
 
-      const taken = med.dates_taken.includes(DAY_NAMES[day]);
+      const taken = med.dates_taken.includes(formattedCurrentDate);
       const nowHour = today.getHours();
-
       let dot: DotColor = '';
 
       if (taken) {
         dot = 'green';
-      } else if (med.hour > nowHour) {
+      } else if (med.hour > nowHour - 19 && currentDate >= today) {
         dot = 'grey';
       } else {
         dot = 'red';
@@ -122,28 +118,6 @@ export class Calendar {
 
     return result;
   }
-
-  // getDotsForDay(day: number | null): DotColor[] {
-  //   if (!day) return [];
-
-  //   const date = this.currentDate();
-  //   const medications = this.medicationService.medications();
-
-  //   const dotArray = signal<DotColor[]>([]); // this is 3 wide 2 tall max
-  //   for (const med of medications) {
-  //     if (med.date_added (this is a string) is before or is current day) {
-  //       if(med.days_to_take (string array) includes today) {
-  //         add a dot to the dot array,
-  //         green if its also in the dates taken array,
-  //         grey if med.hour (number) hasnt happened yet,
-  //         red if it has happened, but isnt in the dates taken array,
-  //         and if this array is less than 6, fill it with '',
-  //         otherwise if its more than six, exit the for loop
-  //       }
-  //     }
-  //   }
-  //   return dotArray();
-  // }
 
   // buttons to navigate months
   prevMonth() {

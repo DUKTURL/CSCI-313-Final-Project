@@ -14,10 +14,6 @@
 
       <!-- Days -->
       @for (d of days; track $index) {
-        <!-- <div class="day" [class.empty]="!d" (click)="go(d)">
-          {{ d }}
-        </div> -->
-        <!-- //chat code -->
         <div class="day" [class.empty]="!d" (click)="go(d)">
           <div class="number">{{ d }}</div>
 
@@ -27,7 +23,6 @@
             }
           </div>
         </div>
-        <!-- //end chat code -->
       }
     </div>
   </div>
