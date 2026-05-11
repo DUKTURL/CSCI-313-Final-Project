@@ -76,4 +76,10 @@ async toggleTaken(med: MedicationModel, event: Event) {
 
     }
   }
+
+  // delete a medication from the day view, which calls the medication service to delete it from Firestore
+  async deleteMedication(med: MedicationModel) {
+    if (!med.id) return;
+    await this.medicationService.deleteMedication(med.id);
+  }
 }

@@ -1,7 +1,7 @@
 import { MedicationModel } from './models/medication-model';
 import { db } from './firebase.config';
 import { Injectable, signal } from '@angular/core';
-import { addDoc, collection, onSnapshot, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, doc, updateDoc, deleteDoc} from 'firebase/firestore';
 
 
 
@@ -18,6 +18,12 @@ export class Medication {
   async addMedication(medication: MedicationModel) {
     await addDoc(this.collectionRef, medication);
   } 
+
+  // deletes a medication document from Firestore based on the provided medication ID
+  async deleteMedication(medId: string) {
+    const docRef = doc(this.collectionRef, medId);
+    await deleteDoc(docRef);
+  }
 
   //updates a medication document in Firestore to add a date to the dates_taken array
   async markMedicationTaken(id: string, date: string, dates_taken: string[]) {
