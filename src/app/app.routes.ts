@@ -11,6 +11,11 @@ export const routes: Routes = [
     title: 'Calendar',
   },
   {
+    path: 'calendar',
+    component: Calendar,
+    title: 'Calendar',
+  },
+  {
     path: 'auth',
     component: UserAuth,
     title: 'Authentication',
@@ -24,5 +29,5 @@ export const routes: Routes = [
     path: 'add-medication',
     component: AddMedication,
     title: 'Add Medication',
-  }
+  },
 ];
