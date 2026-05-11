@@ -19,8 +19,13 @@
           @for (med of medications(); track med.med_id) {
             <div class="card mb-3 p-3">
               <!-- Medication name -->
-              <div class="fw-bold">
+              <div class="fw-bold d-flex align-items-center">
                 {{ med.name }}
+
+                <!-- delete button -->
+                <button class="btn btn-sm btn-danger ms-auto" (click)="deleteMedication(med)">
+                  Delete Medication
+                </button>
               </div>
 
               <!-- Medication description -->
